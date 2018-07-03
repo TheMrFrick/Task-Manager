@@ -1,0 +1,77 @@
+<% include ./partials/header %>
+    <div style="padding: 10 auto">
+    </div>
+
+	<div class="ui main text container segment" style="padding: 10 auto">
+        <div class="ui huge header" style="text-align:center">New Task</div>
+		<div class="row">
+			<form action="/new" method="POST">
+				<div class="form-group">
+					<label for="taskTitle">Title of Task</label>
+					<input class="form-control" type="text" placeholder="Enter the Title of the Task" aria-describedby="titleHelp" name="task[title]"
+						required>
+					<small id="titleHelp" class="form-text text-muted">Any name can be used</small>
+				</div>
+				<div class="form-group">
+					<label for="taskDescription">Description</label>
+					<textarea class="form-control" id="taskDescription" name="task[description]" rows="3" placeholder="Description of Task"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="taskDate">Date Given</label>
+					<input type="date" id="taskDate" class="form-control" name="task[dateGiven]" required>
+				</div>
+				<div class="form-group">
+					<label for="taskDueDate">Due Date</label>
+					<input type="date" id="taskDueDate" class="form-control" name=task[dateDue]>
+				</div>
+				<!--<div class="form-group">
+					<label for="givenBy">Who is ordering this task?</label>
+					<input type="text" class="form-control" id="givenBy" name="task[givenBy]" placeholder="Joe Smith">
+				</div>-->
+				<div class="form-group">
+					<label for="exampleSelect2">Who is this task from? (Can Select Multiple)</label>
+					<select multiple class="form-control" id="exampleSelect2" name="task[givenBy]" required>
+					<option value="example@example.com">Arnu</option>
+					<option value="example@example.com">Brandi</option>
+					<option value="example@example.com">Jarrod</option>
+					<option value="example@example.com">Kyle</option>
+					<option value="example@example.com">Linda</option>
+					<option value="example@example.com">Monserrat</option>
+					<option value="example@example.com">Rita</option>
+					<option value="example@example.com">Robin</option>
+					</select>
+				</div>
+				<fieldset class="form-group">
+					<legend>Urgency</legend>
+					<div class="form-check">
+						<label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="task[urgency]" id="optionsRadios3" value="low" >
+                            Low
+                        </label>
+					</div>
+                    <div class="form-check">
+						<label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="task[urgency]" id="optionsRadios2" value="normal" checked>
+                            Normal
+                        </label>
+					</div>
+					<div class="form-check">
+						<label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="task[urgency]" id="optionsRadios1" value="urgent" >
+                            Urgent
+                        </label>
+					</div>
+
+				</fieldset>
+                <!--<div class="form-group">
+                    <label for="taskID">ID</label>
+                    <input type="text" name= "task[id]" class="form-control" id="taskID" required disabled>
+                </div>-->
+                <div class="form-group">
+                    <button class="btn btn-primary btn-large btn-block" type="submit">Submit</button>
+                </div>
+			</form>
+		</div>
+	</div>
+
+	<% include ./partials/footer %>

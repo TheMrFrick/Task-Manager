@@ -1,0 +1,204 @@
+<meta http-equiv="refresh" content="600">
+<% include ./partials/header %>
+
+
+
+<!--Page-->
+	<div class="container" style="padding:5% ;">
+		<h2 class="page-heading" align="center">Tasks List</h2>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="ui main text segment">
+					<h4>Incomplete Tasks (<%= incomplete.length %>)</h4>
+					<div class="panel-group incomplete" id="accordion">
+						<!--Addition-->
+						<% incomplete.forEach(function(incomplete){ %>
+
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= incomplete._id %>">
+											<% if(incomplete.urgency === "urgent"){ %>
+												<i class="fa fa-exclamation" style="color:red" aria-hidden="true"></i>
+												<% } else if(incomplete.urgency === "low"){ %>
+													<i class="fa fa-exclamation" style="color:blue" aria-hidden="true"></i>
+													<% } %>
+														<%= incomplete.title %> <span style="float: right;"><%= incomplete.givenBy %></span></a>
+									</h4>
+								</div>
+								<div id="collapse<%= incomplete._id %>" class="panel-collapse collapse">
+									<div class="panel-body">
+										<p><strong>Description:</strong></p>
+											<textarea class="form-control" cols="30" rows="10" readonly ><%= incomplete.description %></textarea>
+										<hr>
+										<p><strong>Date Given:</strong>
+											<%= incomplete.dateGiven %>
+										</p>
+										<% if(incomplete.dateDue === "" || incomplete.dateDue === "null" || !(incomplete.hasOwnProperty('dateDue'))){ %>
+
+										<% } else { %>
+											<p><strong>Date Due:</strong>
+												<%= incomplete.dateDue %>
+											</p>
+										<% } %>
+										<form action="/delete/<%= incomplete._id %>?_method=DELETE" method="POST">
+											<button class="ui inverted red button" style="float:right;">Delete</button>
+										</form>
+										<form action="/progress/<%= incomplete._id %>?_method=PUT" method="POST">
+											<button class="ui positive basic button" style="float:right;">In Progress</button>
+										</form>
+										<a href="/edit/<%= incomplete._id %>" class="ui blue basic button">Edit</a>
+									</div>
+								</div>
+							</div>
+
+							<% }); %>
+								<!--/Addition-->
+					</div>
+				</div>
+				<!-- /.panel-group -->
+				<!--Start of In Progress-->
+				<div class="ui main text segment">
+					<h4>In-Progress Tasks (<%= progress.length %>)</h4>
+					<div class="panel-group " id="accordion">
+						<% progress.forEach(function(progress){ %>
+
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= progress._id %>">
+											<% if(progress.urgency === "urgent") { %>
+												<i class="fa fa-exclamation" style="color:red" aria-hidden="true"></i>
+												<% } else if(progress.urgency === "low") { %>
+													<i class="fa fa-exclamation" style="color:blue" aria-hidden="true"></i>
+													<% } %>
+														<%= progress.title %> <span style="float: right;"><span style="color: blue;padding-right:15px;"><%= progress.status %></span> <%= progress.givenBy %></span>
+										</a>
+									</h4>
+								</div>
+								<div id="collapse<%= progress._id %>" class="panel-collapse collapse">
+									<div class="panel-body">
+										<p><strong>Description:</strong></p>
+											<textarea class="form-control" cols="30" rows="10" readonly ><%= progress.description %></textarea>
+										
+										<hr>
+                                        <p><strong>Comments:</strong></p>
+                                            <textarea class="form-control" cols="30" rows="10" readonly ><%= progress.comments %></textarea>
+										<hr>
+										<p><strong>Date Given: </strong>
+											<%= progress.dateGiven %>
+										</p>
+										<% if(progress.dateDue === "" || progress.dateDue === "null" || !(progress.hasOwnProperty('dateDue'))){ %>
+
+										<% } else { %>
+											<p><strong>Date Due:</strong>
+												<%= progress.dateDue %>
+											</p>
+										<% } %>
+										<p><strong>Date Started: </strong>
+											<%= progress.dateStarted %>
+										</p>
+                                        <button type="button" class="ui inverted orange button" data-toggle="modal" data-target="#commentModal<%= progress._id %>" style="float:right; inline">Add Comments</button>
+                                        <!-- Modal -->
+										<div class="modal fade" id="commentModal<%= progress._id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+											<div class="modal-dialog" role="document">
+												<form action="/progress/<%= progress._id %>/comments?_method=PUT" method="POST">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h4 class="modal-title" id="myModalLabel">Add Comments</h4>
+														</div>
+														<div class="modal-body">
+															<textarea class="form-control" name="task[comments]" id="" cols="30" rows="10" ><%= progress.comments %></textarea>
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-default" data-dismiss="modal" style="float:right; inline">Close</button>
+																<button type="submit" class="btn btn-primary " style="float: right; inline; margin-right: 2px;">Save changes</button>
+												</form>
+													</div>
+												</div>
+											</div>
+										</div>
+										<form action="/delete/<%= progress._id %>?_method=DELETE" method="POST">
+											<button class="ui inverted red button" style="float:right;">Delete</button>
+										</form>
+										<form action="/edit/<%= progress._id %>/In-Progress?_method=PUT" method="POST">
+											<button class="ui basic purple button" style="float:right; inline">In-Progress</button>
+										</form>
+										<form action="/edit/<%= progress._id %>/Waiting on Someone Else?_method=PUT" method="POST">
+											<button class="ui basic purple button" style="float:right; inline">Waiting on Someone Else</button>
+										</form>
+										<form action="/complete/<%= progress._id %>?_method=PUT" method="POST">
+											<button class="ui basic blue button" style="float:right; inline">Complete</button>
+										</form>
+										<a href="/edit/<%= progress._id %>" class="ui blue basic button">Edit</a>
+									</div>
+								</div>
+							</div>
+							<% }); %>
+					</div>
+				</div>
+				<!--End of In-Progress-->
+				<div class="ui main text segment">
+					<h4>Complete Tasks (<%= complete.length %>)</h4>
+					<div class="panel-group complete" id="accordion">
+						<% complete.forEach(function(complete){ %>
+
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a style="text-decoration: line-through; color: gray;" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+											href="#collapse<%= complete._id %>">
+											<% if(complete.urgency === "urgent"){%>
+												<i class="fa fa-exclamation" style="color:red" aria-hidden="true"></i>
+												<% } else if(complete.urgency === "low"){ %>
+													<i class="fa fa-exclamation" style="color:blue" aria-hidden="true"></i>
+													<% } %>
+														<%= complete.title %> <span style="float: right; text-decoration:line-through;"><%= complete.givenBy %></span></a>
+									</h4>
+								</div>
+								<div id="collapse<%= complete._id %>" class="panel-collapse collapse">
+									<div class="panel-body">
+										<p><strong>Description:</strong></p>
+											<textarea class="form-control" cols="30" rows="10" readonly ><%= complete.description %></textarea>
+										
+										<hr>
+										<p><strong>Comments:</strong></p>
+                                            <textarea class="form-control" cols="30" rows="10" readonly ><%= complete.comments %></textarea>
+										<hr>
+										
+										<p><strong>Date Given:</strong>
+											<%= complete.dateGiven %>
+										</p>
+										<% if(complete.dateDue === "" || complete.dateDue === "null" || !(complete.hasOwnProperty('dateDue'))){ %>
+
+										<% } else { %>
+											<p><strong>Date Due:</strong>
+												<%= complete.dateDue %>
+											</p>
+										<% } %>
+										<p><strong>Date Started:</strong>
+											<%= complete.dateStarted %>
+										</p>
+										<p><strong>Date Complete:</strong>
+											<%= complete.dateComplete %>
+										</p>
+										<hr>
+										<form action="/delete/<%= complete._id %>?_method=DELETE" method="POST">
+											<button class="ui inverted red button" style="float:right;">Delete</button>
+										</form>
+										<form action="/progress/complete/<%= complete._id %>?_method=PUT" method="POST">
+											<button class="ui basic purple button" style="float:right; inline">In-Progress</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						<% }); %>
+					</div>
+				</div>
+			</div>
+			<!-- /.col-lg-12 -->
+		</div>
+		<a href="/new" class="btn btn-primary" style="width: 100%; margin-top:10px">Add New Task</a>
+	</div>
+
+	<% include ./partials/footer %>
