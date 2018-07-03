@@ -111,16 +111,7 @@ var createDocument = function () {
 var sendEmail = function (toWho, fromWho, emailSubject, emailText) {
     // create reusable transporter object using the default SMTP transport
     var transporter = nodemailer.createTransport("SMTP", {
-        host: "192.168.1.3",
-        secureConnection: false,
-        port: 25,
-        auth: {
-            user: "sbsadmin",
-            pass: ".b1gMx2w"
-        },
-        tls: {
-            ciphers: 'SSLv3'
-        }
+        //have to redo to your settings
     });
 
     // setup e-mail data with unicode symbols
@@ -218,7 +209,7 @@ app.get("/new", function (req, res) {
 app.post("/new", function (req, res) {
     // create reusable transporter object using the default SMTP transport
     var fromWho = req.body.task.givenBy;
-    var to = 'kfrick@fewaglobal.org';
+    var to = ;//your email
     var subject = "New Task: " + req.body.task.title;
     var text = 'Task Name: ' + req.body.task.title + '\n' +
         'Task Description: ' + req.body.task.description + '\n' +
